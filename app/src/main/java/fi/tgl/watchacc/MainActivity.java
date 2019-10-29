@@ -27,6 +27,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
     private SensorManager manager;
 
     private ArrayList<Long> timeData;
+    private ArrayList<Long> currentTimeData;
     private ArrayList<ArrayList<Float>> data;
     private long time;
     private boolean isFirst;
@@ -79,6 +80,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
                 isFirst = false;
             }
             timeData.add(event.timestamp - time);
+            currentTimeData.add(System.currentTimeMillis());
         }
 
     }
@@ -104,6 +106,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
                 startButton.setText("STOP");
                 data = new ArrayList<>();
                 timeData = new ArrayList<>();
+                currentTimeData = new ArrayList<>();
                 for (int i = 0; i < 3; i++) {
                     ArrayList<Float> arr = new ArrayList<>();
                     data.add(arr);
@@ -130,6 +133,8 @@ public class MainActivity extends WearableActivity implements SensorEventListene
                     fout.write(comma.getBytes());
                 }
                 fout.write(String.format("%.6f", Float.parseFloat(timeData.get(i).toString())/1000000000f).getBytes());
+                fout.write(comma.getBytes());
+                fout.write(String.valueOf(currentTimeData.get(i)).getBytes());
                 fout.write(newline.getBytes());
             }
             fout.close();
