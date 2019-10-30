@@ -123,7 +123,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         String filename = sdf.format(date) + ".csv";
         Log.d(TAG, filename);
         try {
-            FileOutputStream fout = openFileOutput("watch_" + String.format("%03d", id) + "_" + filename, MODE_PRIVATE);
+            FileOutputStream fout = openFileOutput("Watch_" + String.format("%03d", id) + "_" + filename, MODE_PRIVATE);
             String comma = ",";
             String newline = "\n";
             for (int i = 0; i < data.get(0).size(); i++) {
