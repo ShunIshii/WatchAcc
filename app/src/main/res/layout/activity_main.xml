@@ -19,6 +19,13 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/Status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textSize="18sp" />
+
             <EditText
                 android:id="@+id/id_Text"
                 android:layout_width="wrap_content"

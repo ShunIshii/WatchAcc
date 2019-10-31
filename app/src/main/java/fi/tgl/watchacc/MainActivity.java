@@ -6,6 +6,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.wearable.activity.WearableActivity;
 import android.util.Log;
 import android.view.View;
@@ -32,10 +33,11 @@ public class MainActivity extends WearableActivity implements SensorEventListene
     private long time;
     private boolean isFirst;
     private boolean isMeasuring;
-
+    private TextView statusText;
     private EditText idText;
     private int id;
     private Button startButton;
+    Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,8 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         setContentView(R.layout.activity_main);
         idText = findViewById(R.id.id_Text);
         startButton = findViewById(R.id.Start_Button);
+        statusText = findViewById(R.id.Status);
+        statusText.setText("Tap to start");
         isMeasuring = false;
         time = 0l;
         id = 0;
@@ -94,7 +98,19 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         if (isMeasuring){
             isMeasuring = false;
             startButton.setText("START");
-            OutputFile();
+            statusText.setText("Writing...");
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    OutputFile();
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            statusText.setText("Tap to start");
+                        }
+                    });
+                }
+            }).start();
         }
         else {
             if (idText.getText().toString().equals("")) {
@@ -112,6 +128,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
                     data.add(arr);
                 }
                 id = Integer.parseInt(idText.getText().toString());
+                statusText.setText("Measuring...");
             }
 
         }
